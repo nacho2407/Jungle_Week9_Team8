@@ -14,6 +14,9 @@
 #include <cmath>
 #include <cstring>
 
+#include "Collision/OverlapDetector.h"
+#include "Core/Logging/LogMacros.h"
+
 namespace
 {
 bool HasSameTransformBasis(const FMatrix& A, const FMatrix& B)
@@ -37,6 +40,17 @@ IMPLEMENT_CLASS(UPrimitiveComponent, USceneComponent)
 
 UPrimitiveComponent::~UPrimitiveComponent()
 {
+    if (bRegisteredInOverlapDetector && Owner)
+    {
+        if (UWorld* World = Owner->GetWorld())
+        {
+            if (FOverlapDetector* OverlapDetector = World->GetOverlapDetector())
+            {
+                OverlapDetector->UnregisterComponent(this);
+            }
+        }
+    }
+    
     DestroyRenderState();
 }
 
@@ -313,17 +327,51 @@ void UPrimitiveComponent::DestroyRenderState()
 void UPrimitiveComponent::BroadcastComponentBeginOverlap(AActor* OtherActor)
 {
     OnComponentBeginOverlap.BroadCast(this, OtherActor);
+    UE_LOG(this,Warning,"BroadcastComponentBeginOverlap [ Begin OverLap ]");
 }
 
 void UPrimitiveComponent::BroadcastComponentEndOverlap(AActor* OtherActor)
 {
     OnComponentEndOverlap.BroadCast(this, OtherActor);
+    UE_LOG(this,Warning,"BroadcastComponentBeginOverlap [ End OverLap ]");
 }
 
 void UPrimitiveComponent::BroadcastComponentHit(AActor* OtherActor)
 {
     OnComponentHit.BroadCast(this, OtherActor);
 }
+
+bool UPrimitiveComponent::SetGenerateOverlapEvents(bool bOnOff)
+{
+    if (!Owner)
+    {
+        UE_LOG(this,Warning,"UPrimitiveComponent::SetGenerateOverlapEvents [ No Owner ]");
+        return false;
+    }
+    UWorld* World = Owner->GetWorld();
+    if (!World)
+    {
+        UE_LOG(this,Warning,"UPrimitiveComponent::SetGenerateOverlapEvents [ No World ]");
+        return false;
+    }
+    FOverlapDetector* OverlapDetector = World->GetOverlapDetector();
+    if (!OverlapDetector)
+    {
+        UE_LOG(this,Warning,"UPrimitiveComponent::SetGenerateOverlapEvents [ No Overlap Detector ]");
+        return false;
+    }
+    if (bOnOff)
+    {
+        bool Registered = OverlapDetector->RegisterComponent(this);
+        return Registered;
+    }
+    else
+    {
+        bool UnRegistered = OverlapDetector->UnregisterComponent(this);
+        return UnRegistered;
+    }
+}
+
 
 void UPrimitiveComponent::MarkRenderStateDirty()
 {

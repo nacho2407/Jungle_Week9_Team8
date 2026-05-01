@@ -13,6 +13,7 @@
 #include "Render/Visibility/LOD/LODContext.h"
 #include <Collision/Octree.h>
 #include <Collision/SpatialPartition.h>
+#include <Collision/OverlapDetector.h>
 
 class UCameraComponent;
 class UPrimitiveComponent;
@@ -72,6 +73,9 @@ public:
     void SetWorldType(EWorldType InWorldType) { WorldType = InWorldType; }
     EWorldType GetWorldType() const { return WorldType; }
     void UpdateActorInOctree(AActor* actor);
+    
+    FOverlapDetector* GetOverlapDetector() { return &OverlapDetector; }
+    const FOverlapDetector* GetOverlapDetector() const { return &OverlapDetector; }
 
 private:
     // TArray<AActor*> Actors;
@@ -93,6 +97,10 @@ private:
 
     FSpatialPartition Partition;
     EWorldType WorldType = EWorldType::Editor;
+    
+    
+    //Collision
+    FOverlapDetector OverlapDetector;
 };
 
 template <typename T>

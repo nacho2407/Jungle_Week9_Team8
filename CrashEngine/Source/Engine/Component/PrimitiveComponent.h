@@ -153,6 +153,9 @@ public:
     void BroadcastComponentEndOverlap(AActor* OtherActor);
     void BroadcastComponentHit(AActor* OtherActor);
 
+    bool IsRegisteredToOverlapDetector() const { return bRegisteredInOverlapDetector; }
+    void SetRegisteredToOverlapDetector(bool bRegistered) { bRegisteredInOverlapDetector = bRegistered; }
+    bool SetGenerateOverlapEvents(bool bOnOff);
 protected:
     void OnTransformDirty() override;
     void EnsureWorldAABBUpdated() const;
@@ -170,5 +173,7 @@ protected:
 
     FOctree* OctreeNode = nullptr;
     bool bInOctreeOverflow = false;
+    
+    bool bRegisteredInOverlapDetector = false;
 };
 

@@ -17,6 +17,7 @@ void AStaticMeshActor::InitDefaultComponents(const FString& UStaticMeshFileName)
     UStaticMesh* Asset = FObjManager::LoadObjStaticMesh(UStaticMeshFileName, Device);
 
     StaticMeshComponent->SetStaticMesh(Asset);
+    StaticMeshComponent->SetGenerateOverlapEvents(true);
 
     // UUID 텍스트 표시
     // TextRenderComponent = AddComponent<UTextRenderComponent>();

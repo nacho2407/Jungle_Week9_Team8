@@ -255,6 +255,12 @@ void UWorld::Tick(float DeltaTime, ELevelTick TickType)
 
 
     TickManager.Tick(this, DeltaTime, TickType);
+
+    {
+        SCOPE_STAT_CAT("OverlapDetector", "1_WorldTick");
+        Partition.FlushPrimitive();
+        OverlapDetector.Tick(GetOctree());
+    }
 }
 
 void UWorld::EndPlay()
@@ -268,6 +274,7 @@ void UWorld::EndPlay()
     }
 
     PersistentLevel->EndPlay();
+    OverlapDetector.Clear();
 
     // Clear spatial partition while actors/components are still alive.
     // Otherwise Octree teardown can dereference stale primitive pointers during shutdown.
