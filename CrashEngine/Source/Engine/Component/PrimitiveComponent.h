@@ -154,7 +154,7 @@ public:
     void BroadcastComponentHit(AActor* OtherActor);
 
     bool IsRegisteredToOverlapDetector() const { return bRegisteredInOverlapDetector; }
-    void SetRegisteredToOverlapDetector(bool bRegistered) { bRegisteredInOverlapDetector = bRegistered; }
+    void SetRegisteredToOverlapDetector(bool bRegistered) { bRegisteredInOverlapDetector = bRegistered; bIsRegisteredToOverlapDetectorInEditor = bRegistered; }
     bool SetGenerateOverlapEvents(bool bOnOff);
 protected:
     void OnTransformDirty() override;
@@ -169,6 +169,7 @@ protected:
     bool bVisibleInEditor = true;
     bool bVisibleInGame = true;
     bool bIsEditorHelper = false;
+    bool bIsRegisteredToOverlapDetectorInEditor = false;
     FPrimitiveProxy* SceneProxy = nullptr;
 
     FOctree* OctreeNode = nullptr;

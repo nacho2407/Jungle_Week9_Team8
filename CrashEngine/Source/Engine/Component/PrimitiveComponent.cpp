@@ -183,6 +183,7 @@ void UPrimitiveComponent::GetEditableProperties(TArray<FPropertyDescriptor>& Out
     OutProps.push_back({ "Visible In Editor", EPropertyType::Bool, &bVisibleInEditor });
     OutProps.push_back({ "Visible In Game", EPropertyType::Bool, &bVisibleInGame });
     OutProps.push_back({ "Is Editor Helper", EPropertyType::Bool, &bIsEditorHelper });
+    OutProps.push_back({"bCollidable", EPropertyType::Bool, &bIsRegisteredToOverlapDetectorInEditor });
 }
 
 void UPrimitiveComponent::PostEditProperty(const char* PropertyName)
@@ -199,6 +200,7 @@ void UPrimitiveComponent::PostEditProperty(const char* PropertyName)
     {
         MarkRenderVisibilityDirty();
     }
+    SetGenerateOverlapEvents(bIsRegisteredToOverlapDetectorInEditor);
 }
 
 FBoundingBox UPrimitiveComponent::GetWorldBoundingBox() const
