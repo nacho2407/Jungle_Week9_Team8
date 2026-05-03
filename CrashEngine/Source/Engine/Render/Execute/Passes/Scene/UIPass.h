@@ -8,6 +8,7 @@ class FPrimitiveProxy;
 class FUIPass : public FMeshPassBase
 {
 public:
+    void PrepareInputs(FRenderPipelineContext& Context) override {};
     void PrepareTargets(FRenderPipelineContext& Context) override;
     void BuildDrawCommands(FRenderPipelineContext& Context) override { (void)Context; }
     void BuildDrawCommands(FRenderPipelineContext& Context, const FPrimitiveProxy& Proxy) override;

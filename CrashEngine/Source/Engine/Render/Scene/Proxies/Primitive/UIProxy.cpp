@@ -24,8 +24,8 @@ void FUIProxy::UpdateMesh()
     Blend = EBlendState::AlphaBlend;
     DepthStencil = EDepthStencilState::NoDepth;
     Rasterizer = ERasterizerState::SolidNoCull;
-    MeshBuffer = Owner->GetMeshBuffer();
-    Shader = FShaderManager::Get().GetShader(EShaderType::Primitive);
+    MeshBuffer = &FMeshBufferManager::Get().GetMeshBuffer(EPrimitiveMeshShape::TexturedQuad);
+    Shader = FShaderManager::Get().GetShader(EShaderType::Billboard);
 
     UpdateMaterial();
 }
@@ -58,11 +58,17 @@ void FUIProxy::UpdateTransform()
     UUIImageComponent* UIComp = static_cast<UUIImageComponent*>(Owner);
     if (!UIComp) return;
 
-    FMatrix ScaleMat = FMatrix::MakeScaleMatrix(FVector(UIComp->GetSize().X, UIComp->GetSize().Y, 1.0f));
+    FMatrix ScaleMat = FMatrix::MakeScaleMatrix(FVector(1.0f, UIComp->GetSize().X, UIComp->GetSize().Y));
 
-    FMatrix TransMat = FMatrix::MakeTranslationMatrix(FVector(UIComp->GetPosition().X, UIComp->GetPosition().Y, (float)UIComp->GetZOrder() * 0.01f));
+    FMatrix RotMat = FMatrix::MakeRotationY(90.0f);
 
-    PerObjectConstants = FPerObjectCBData::FromWorldMatrix(ScaleMat * TransMat);
+    float PosX = UIComp->GetPosition().X + (UIComp->GetSize().X * 0.5f);
+    float PosY = UIComp->GetPosition().Y + (UIComp->GetSize().Y * 0.5f);
+
+    FMatrix TransMat = FMatrix::MakeTranslationMatrix(FVector(PosX, PosY, 0.5f));
+
+    PerObjectConstants = FPerObjectCBData::FromWorldMatrix(ScaleMat * RotMat * TransMat);
+
     CachedWorldPos = FVector(UIComp->GetPosition().X, UIComp->GetPosition().Y, 0.0f);
     CachedBounds = UIComp->GetWorldBoundingBox();
 

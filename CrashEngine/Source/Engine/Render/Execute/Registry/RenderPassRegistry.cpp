@@ -21,6 +21,7 @@
 #include "Render/Execute/Passes/Scene/DeferredLightingPass.h"
 #include "Render/Execute/Passes/Scene/PresentPass.h"
 #include "Render/Execute/Passes/Scene/NonLitViewModePass.h"
+#include "Render/Execute/Passes/Scene/UIPass.h"
 
 // ========== Lifecycle ==========
 
@@ -58,6 +59,7 @@ void FRenderPassRegistry::Initialize()
     Passes.emplace((int32)ERenderPassNodeType::GizmoPass, new FGizmoPass());
     Passes.emplace((int32)ERenderPassNodeType::OverlayTextPass, new FOverlayTextPass());
     Passes.emplace((int32)ERenderPassNodeType::LightHitMapPass, new FLightHitMapPass());
+    Passes.emplace((int32)ERenderPassNodeType::UIPass, new FUIPass());
 }
 
 void FRenderPassRegistry::Release()

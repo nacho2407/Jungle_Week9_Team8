@@ -39,7 +39,7 @@ void FUIPass::SubmitDrawCommands(FRenderPipelineContext& Context)
     float Width = Context.SceneView ? Context.SceneView->ViewportWidth : 1920.0f;
     float Height = Context.SceneView ? Context.SceneView->ViewportHeight : 1080.0f;
 
-    FMatrix OrthoProj = FMatrix::MakeOrthographicOffCenter(0.0f, Width, Height,0.0f, 0.0f, 1.0f);
+    FMatrix OrthoProj = FMatrix::MakeOrthographicOffCenter(0.0f, Width, Height, 0.0f, 0.0f, 1.0f);
 
     FFrameCBData UIFrameData = {};
     UIFrameData.View = FMatrix::Identity;

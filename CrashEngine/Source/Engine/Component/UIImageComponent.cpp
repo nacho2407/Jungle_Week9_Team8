@@ -123,7 +123,7 @@ void UUIImageComponent::Serialize(FArchive& Ar)
 
 FMeshBuffer* UUIImageComponent::GetMeshBuffer() const
 {
-    return &FMeshBufferManager::Get().GetMeshBuffer(EPrimitiveMeshShape::Quad);
+    return &FMeshBufferManager::Get().GetMeshBuffer(EPrimitiveMeshShape::TexturedQuad);
 }
 
 FMeshDataView UUIImageComponent::GetMeshDataView() const
