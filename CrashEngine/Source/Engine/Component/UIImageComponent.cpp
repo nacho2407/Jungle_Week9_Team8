@@ -1,4 +1,4 @@
-﻿#include "UIImageComponent.h"
+#include "UIImageComponent.h"
 #include "Serialization/Archive.h"
 #include <cmath>
 #include "Materials/Material.h"
@@ -7,52 +7,15 @@
 #include "Runtime/Engine.h"
 #include "Texture/Texture2D.h"
 
-IMPLEMENT_COMPONENT_CLASS(UUIImageComponent, UPrimitiveComponent, EEditorComponentCategory::Visual)
+IMPLEMENT_COMPONENT_CLASS(UUIImageComponent, UUIComponent, EEditorComponentCategory::Visual)
 
 UUIImageComponent::UUIImageComponent()
 {
-    bBlockComponent = false;
-    bGenerateOverlapEvents = false;
 }
 
 FPrimitiveProxy* UUIImageComponent::CreateSceneProxy()
 {
     return new FUIProxy(this);
-}
-
-void UUIImageComponent::UpdateWorldAABB() const
-{
-    FVector Min(Position.X, Position.Y, 0.0f);
-    FVector Max(Position.X + Size.X, Position.Y + Size.Y, 0.1f);
-
-    WorldAABBMinLocation = Min;
-    WorldAABBMaxLocation = Max;
-}
-
-void UUIImageComponent::SetPosition(const FVector2& InPosition)
-{
-    Position = InPosition;
-    MarkRenderTransformDirty();
-    MarkWorldBoundsDirty();
-}
-
-void UUIImageComponent::SetSize(const FVector2& InSize)
-{
-    Size = InSize;
-    MarkRenderTransformDirty();
-    MarkWorldBoundsDirty();
-}
-
-void UUIImageComponent::SetColor(const FVector4& InColor)
-{
-    Color = InColor;
-    MarkRenderTransformDirty();
-}
-
-void UUIImageComponent::SetZOrder(int32 InZOrder)
-{
-    ZOrder = InZOrder;
-    MarkRenderTransformDirty();
 }
 
 void UUIImageComponent::SetMaterial(UMaterial* InMaterial)
@@ -77,7 +40,7 @@ void UUIImageComponent::SetRotation(float InRotation)
 
 void UUIImageComponent::GetEditableProperties(TArray<FPropertyDescriptor>& OutProps)
 {
-    UPrimitiveComponent::GetEditableProperties(OutProps);
+    UUIComponent::GetEditableProperties(OutProps);
     OutProps.push_back({ "UI Position", EPropertyType::Vec2, &Position });
     OutProps.push_back({ "UI Size",     EPropertyType::Vec2, &Size });
     OutProps.push_back({ "UI Rotation",    EPropertyType::Float, &Rotation });
@@ -88,7 +51,7 @@ void UUIImageComponent::GetEditableProperties(TArray<FPropertyDescriptor>& OutPr
 
 void UUIImageComponent::PostEditProperty(const char* PropertyName)
 {
-    UPrimitiveComponent::PostEditProperty(PropertyName);
+    UUIComponent::PostEditProperty(PropertyName);
 
     if (strcmp(PropertyName, "UI Position") == 0 ||
         strcmp(PropertyName, "UI Size") == 0 ||
@@ -121,7 +84,7 @@ void UUIImageComponent::PostEditProperty(const char* PropertyName)
 
 void UUIImageComponent::Serialize(FArchive& Ar)
 {
-    UPrimitiveComponent::Serialize(Ar);
+    UUIComponent::Serialize(Ar);
     Ar << Position.X << Position.Y;
     Ar << Size.X << Size.Y;
     Ar << Rotation;

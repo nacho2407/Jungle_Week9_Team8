@@ -1,37 +1,35 @@
 ﻿#include "UIPanelComponent.h"
 
-UIPanelComponent::UIPanelComponent()
+IMPLEMENT_COMPONENT_CLASS(UUIPanelComponent, UUIComponent, EEditorComponentCategory::Visual)
+
+UUIPanelComponent::UUIPanelComponent()
 {
-    bIsVisible = false;
 }
 
-void UIPanelComponent::UpdateWorldAABB() const
+FBox2D UUIPanelComponent::GetUIBounds() const
 {
-    FBox2D NewBounds;
-
+    FBox2D CombinedBounds;
     for (USceneComponent* Child : ChildComponents)
     {
-        if (auto* UIComp = dynamic_cast<UPrimitiveComponent*>(Child))
+        if (auto* UIComp = dynamic_cast<UUIComponent*>(Child))
         {
-            // 각 컴포넌트가 가진 고유의 영역을 가져와 합칩니다.
-            // (이미지/텍스트 컴포넌트에 이 함수가 있다고 가정)
-            // FBox2D ChildBox = UIComp->GetUIBounds(); 
-            // NewBounds += ChildBox;
+            CombinedBounds += UIComp->GetUIBounds();
         }
     }
-
-    CachedBounds = NewBounds;
-
-    Super::UpdateWorldAABB();
+    return CombinedBounds;
 }
 
-void UIPanelComponent::SetHovered(bool bInHovered)
+void UUIPanelComponent::SetHovered(bool bInHovered)
 {
     if (bIsHovered == bInHovered) return;
-    bIsHovered = bInHovered;
+    
+    UUIComponent::SetHovered(bInHovered);
 
     for (USceneComponent* Child : ChildComponents)
     {
+        if (auto* UIComp = dynamic_cast<UUIComponent*>(Child))
+        {
+            UIComp->SetHovered(bInHovered);
+        }
     }
-
 }

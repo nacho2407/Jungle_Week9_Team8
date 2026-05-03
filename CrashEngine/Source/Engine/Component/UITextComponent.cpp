@@ -1,15 +1,21 @@
-﻿#include "UITextComponent.h"
+#include "UITextComponent.h"
 #include "Render/Scene/Proxies/Primitive/UITextProxy.h"
 #include "Serialization/Archive.h"
 #include "Runtime/Engine.h"
 
-IMPLEMENT_COMPONENT_CLASS(UUITextComponent, UPrimitiveComponent, EEditorComponentCategory::Visual)
+IMPLEMENT_COMPONENT_CLASS(UUITextComponent, UUIComponent, EEditorComponentCategory::Visual)
 
 UUITextComponent::UUITextComponent()
 {
-    bBlockComponent = false;
-    bGenerateOverlapEvents = false;
     ReacquireDefaultFont();
+}
+
+FBox2D UUITextComponent::GetUIBounds() const
+{
+    // 텍스트 길이에 따른 대략적인 영역 계산 (UIProxy의 로직과 유사하게 맞추는 것이 좋음)
+    float Width = Text.length() * FontSize * 10.0f;
+    float Height = FontSize * 10.0f;
+    return FBox2D(Position, Position + FVector2(Width, Height));
 }
 
 FPrimitiveProxy* UUITextComponent::CreateSceneProxy()
@@ -30,15 +36,6 @@ bool UUITextComponent::ReacquireDefaultFont()
     return CachedFont && CachedFont->IsLoaded();
 }
 
-void UUITextComponent::UpdateWorldAABB() const
-{
-    FVector Min(Position.X, Position.Y, 0.0f);
-    FVector Max(Position.X + (Text.length() * FontSize * 10.0f), Position.Y + (FontSize * 10.0f), 0.1f);
-
-    WorldAABBMinLocation = Min;
-    WorldAABBMaxLocation = Max;
-}
-
 void UUITextComponent::SetText(const FString& InText)
 {
     if (Text == InText) return;
@@ -55,13 +52,6 @@ void UUITextComponent::SetFont(const FName& InFontName)
     MarkProxyDirty(ESceneProxyDirtyFlag::Mesh);
 }
 
-void UUITextComponent::SetPosition(const FVector2& InPosition)
-{
-    Position = InPosition;
-    MarkRenderTransformDirty();
-    MarkWorldBoundsDirty();
-}
-
 void UUITextComponent::SetFontSize(float InSize)
 {
     FontSize = InSize;
@@ -69,21 +59,9 @@ void UUITextComponent::SetFontSize(float InSize)
     MarkWorldBoundsDirty();
 }
 
-void UUITextComponent::SetColor(const FVector4& InColor)
-{
-    Color = InColor;
-    MarkRenderTransformDirty();
-}
-
-void UUITextComponent::SetZOrder(int32 InZOrder)
-{
-    ZOrder = InZOrder;
-    MarkRenderTransformDirty();
-}
-
 void UUITextComponent::GetEditableProperties(TArray<FPropertyDescriptor>& OutProps)
 {
-    UPrimitiveComponent::GetEditableProperties(OutProps);
+    UUIComponent::GetEditableProperties(OutProps);
     OutProps.push_back({ "UI Text", EPropertyType::String, &Text });
     OutProps.push_back({ "Font", EPropertyType::Name, &FontName });
     OutProps.push_back({ "UI Position", EPropertyType::Vec2, &Position });
@@ -94,7 +72,7 @@ void UUITextComponent::GetEditableProperties(TArray<FPropertyDescriptor>& OutPro
 
 void UUITextComponent::PostEditProperty(const char* PropertyName)
 {
-    UPrimitiveComponent::PostEditProperty(PropertyName);
+    UUIComponent::PostEditProperty(PropertyName);
 
     if (strcmp(PropertyName, "UI Text") == 0 ||
         strcmp(PropertyName, "UI Position") == 0 ||
@@ -117,7 +95,7 @@ void UUITextComponent::PostEditProperty(const char* PropertyName)
 
 void UUITextComponent::Serialize(FArchive& Ar)
 {
-    UPrimitiveComponent::Serialize(Ar);
+    UUIComponent::Serialize(Ar);
     Ar << Text;
     Ar << FontName;
     Ar << Position.X << Position.Y;
