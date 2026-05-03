@@ -31,10 +31,14 @@ class UUIComponent : public UPrimitiveComponent
 public:
     DECLARE_CLASS(UUIComponent, UPrimitiveComponent)
 
+    static constexpr float CanvasWidth = 1920.0f;
+    static constexpr float CanvasHeight = 1080.0f;
+
     UUIComponent();
     virtual ~UUIComponent() override = default;
 
     virtual FBox2D GetUIBounds() const { return FBox2D(); }
+    virtual bool HitTest(const FVector2& Point) const;
     virtual void UpdateWorldAABB() const override;
 
     virtual void SetHovered(bool bInHovered);

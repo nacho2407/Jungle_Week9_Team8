@@ -66,8 +66,8 @@ void FUIProxy::UpdateTransform()
 
     FMatrix WorldMat = ScaleMat * UserRotMat * AlignRotMat * TransMat;
 
-    float Width = 1920.0f;
-    float Height = 1080.0f;
+    const float Width = UUIComponent::CanvasWidth;
+    const float Height = UUIComponent::CanvasHeight;
     FMatrix OrthoProj = FMatrix::MakeOrthographicOffCenter(0.0f, Width, Height, 0.0f, 0.0f, 1.0f);
 
     FPerObjectCBData Data = {};

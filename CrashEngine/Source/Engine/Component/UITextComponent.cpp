@@ -12,9 +12,9 @@ UUITextComponent::UUITextComponent()
 
 FBox2D UUITextComponent::GetUIBounds() const
 {
-    // 텍스트 길이에 따른 대략적인 영역 계산 (UIProxy의 로직과 유사하게 맞추는 것이 좋음)
-    float Width = Text.length() * FontSize * 10.0f;
-    float Height = FontSize * 10.0f;
+    // FontBatch::AddScreenText에서 사용하는 glyph 크기(23px 기준)와 맞춰 hover bounds를 계산한다.
+    float Width = Text.length() * FontSize * 23.0f;
+    float Height = FontSize * 23.0f;
     return FBox2D(Position, Position + FVector2(Width, Height));
 }
 

@@ -106,6 +106,17 @@ void InputSystem::AddScrollDelta(int Delta)
     PendingWheelDelta += Delta;
 }
 
+bool InputSystem::TryGetMouseClientPos(HWND WindowHandle, POINT& OutClientPos) const
+{
+    if (!WindowHandle)
+    {
+        return false;
+    }
+
+    OutClientPos = CurrentSnapshot.MouseScreenPos;
+    return ScreenToClient(WindowHandle, &OutClientPos) != 0;
+}
+
 void InputSystem::SampleVirtualKeys()
 {
     for (int VK = 0; VK < 256; VK++)

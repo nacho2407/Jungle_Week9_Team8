@@ -1,0 +1,87 @@
+{
+  "Actors" : [{
+      "ClassName" : "AStaticMeshActor",
+      "NonSceneComponents" : [],
+      "ObjectName" : "AStaticMeshActor_0",
+      "PrimitiveKey" : "10",
+      "RootComponent" : {
+        "Children" : [{
+            "Children" : [],
+            "ClassName" : "UUUIDTextRenderComponent",
+            "Properties" : {
+              "Billboard" : true,
+              "Font" : "Default",
+              "Font Size" : 1.000000,
+              "Is Editor Helper" : true,
+              "Location" : [0.000000, 0.000000, 1.300000],
+              "Rotation" : [-0.000000, 0.000000, 0.000000],
+              "Scale" : [1.000000, 1.000000, 1.000000],
+              "Text" : "UUID : 10",
+              "Visible" : true,
+              "Visible In Editor" : true,
+              "Visible In Game" : false,
+              "bTickEnable" : true
+            }
+          }, {
+            "Children" : [],
+            "ClassName" : "UUIImageComponent",
+            "Properties" : {
+              "Color" : [1.000000, 1.000000, 1.000000, 1.000000],
+              "Is Editor Helper" : false,
+              "Location" : [0.000000, 0.000000, 0.000000],
+              "Material" : {
+                "Path" : "Asset/Content/Materials/Brick.json"
+              },
+              "Rotation" : [-0.000000, 0.000000, 0.000000],
+              "Scale" : [1.000000, 1.000000, 1.000000],
+              "UI Position" : [0.000000, 0.000000],
+              "UI Rotation" : 0.000000,
+              "UI Size" : [100.000000, 100.000000],
+              "Visible" : true,
+              "Visible In Editor" : true,
+              "Visible In Game" : true,
+              "Z-Order" : 0,
+              "bTickEnable" : true
+            }
+          }],
+        "ClassName" : "UStaticMeshComponent",
+        "Properties" : {
+          "Element 0" : {
+            "Path" : "Asset/Content/Materials/_Basic/BasicShapeMaterial.json"
+          },
+          "Is Editor Helper" : false,
+          "Location" : [0.000000, 0.000000, 0.000000],
+          "Rotation" : [-0.000000, 0.000000, 0.000000],
+          "Scale" : [1.000000, 1.000000, 1.000000],
+          "Static Mesh" : "Asset/Content/Models/_Basic/Cube.OBJ",
+          "Visible" : true,
+          "Visible In Editor" : true,
+          "Visible In Game" : true,
+          "bTickEnable" : true
+        }
+      },
+      "bVisible" : true
+    }],
+  "ClassName" : "UWorld",
+  "ContextHandle" : "Default",
+  "ContextName" : "Default",
+  "Name" : "UIScene",
+  "PerspectiveCamera" : {
+    "FOV" : 1.047198,
+    "FarClip" : 1000.000000,
+    "Location" : [8.335890, -0.064541, 12.428910],
+    "NearClip" : 0.100000,
+    "Rotation" : [0.000001, 54.158840, -169.608444]
+  },
+  "Primitives" : {
+    "10" : {
+      "Location" : [0.000000, 0.000000, 0.000000],
+      "ObjStaticMeshAsset" : "Asset/Content/Models/_Basic/Cube.OBJ",
+      "Rotation" : [0.000000, -0.000000, 0.000000],
+      "Scale" : [1.000000, 1.000000, 1.000000],
+      "Type" : "StaticMeshComp"
+    }
+  },
+  "Version" : 2,
+  "WorldType" : "Editor"
+}

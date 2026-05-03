@@ -21,6 +21,7 @@
 #include "Render/Execute/Registry/ViewModePassRegistry.h"
 #include "Render/Execute/Context/RenderCollectContext.h"
 #include "Render/Execute/Context/ViewMode/ViewModeSurfaces.h"
+#include "UI/UIManager.h"
 
 #include <algorithm>
 
@@ -224,6 +225,20 @@ void UEditorEngine::Tick(float DeltaTime)
 	 */
 
     RegisterViewportInputTargets();
+
+    const bool bHasPIESession = PlayInEditorSessionInfo.has_value();
+    const FLevelEditorViewportClient* PIEViewportClient =
+        bHasPIESession ? PlayInEditorSessionInfo->DestinationViewportClient : nullptr;
+    const FViewport* PIEViewport = PIEViewportClient ? PIEViewportClient->GetViewport() : nullptr;
+    const FRect PIEViewportRect = PIEViewportClient ? PIEViewportClient->GetViewportScreenRect() : FRect{};
+
+    FUIManager::UpdatePIEHoverFromViewport(
+        WorldList,
+        bHasPIESession,
+        Window,
+        InputSystem::Get(),
+        PIEViewport,
+        PIEViewportRect);
 
 	for (FEditorViewportClient* VC : ViewportLayout.GetAllViewportClients())
     {

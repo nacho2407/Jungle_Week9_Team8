@@ -146,6 +146,7 @@ void FRenderPipelineRegistry::Initialize()
         {
             PassNode(ERenderPassNodeType::HeightFogPass),
             PassNode(ERenderPassNodeType::FXAAPass),
+            PassNode(ERenderPassNodeType::UIPass),
         });
 
     AddPipeline(

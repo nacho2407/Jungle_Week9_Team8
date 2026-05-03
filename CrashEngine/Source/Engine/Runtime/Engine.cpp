@@ -24,6 +24,7 @@
 #include "Render/Execute/Context/ViewMode/ViewModeSurfaces.h"
 #include "Render/Execute/Passes/Scene/ShadowMapPass.h"
 #include "Render/Execute/Registry/ViewModePassRegistry.h"
+#include "UI/UIManager.h"
 
 DEFINE_CLASS(UEngine, UObject)
 
@@ -44,6 +45,7 @@ ELevelTick ToLevelTickType(EWorldType WorldType)
         return ELevelTick::LEVELTICK_TimeOnly;
     }
 }
+
 } // namespace
 
 void UEngine::Init(FWindowsWindow* InWindow)
@@ -106,6 +108,10 @@ void UEngine::Tick(float DeltaTime)
 {
     FDirectoryWatcher::Get().Tick();
     InputSystem::Get().Tick(Window->IsForeground());
+
+    const FViewport* Viewport = GameViewportClient ? GameViewportClient->GetViewport() : nullptr;
+    FUIManager::UpdateHoverFromFullViewport(GetWorld(), Window, InputSystem::Get(), Viewport);
+
     WorldTick(DeltaTime);
     Render(DeltaTime);
 }

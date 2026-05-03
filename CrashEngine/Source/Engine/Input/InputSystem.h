@@ -12,6 +12,7 @@ public:
     void Tick(bool IsWindowFocused);
 
     const FInputSnapshot& GetSnapshot() const { return CurrentSnapshot; }
+    bool TryGetMouseClientPos(HWND WindowHandle, POINT& OutClientPos) const;
 
     void AddScrollDelta(int Delta);
 

@@ -23,6 +23,7 @@ public:
     virtual void GetEditableProperties(TArray<FPropertyDescriptor>& OutProps) override;
     virtual void PostEditProperty(const char* PropertyName) override;
     virtual void Serialize(FArchive& Ar) override;
+    virtual void PostDuplicate() override;
 
     virtual FMeshBuffer* GetMeshBuffer() const override;
     virtual FMeshDataView GetMeshDataView() const override;

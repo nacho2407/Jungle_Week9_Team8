@@ -24,6 +24,8 @@ FString NormalizeLuaActorClassName(const FString& Name)
         return "AHeightFogActor";
     if (Name == "DecalActor")
         return "ADecalActor";
+    if (Name == "UIPanelActor")
+        return "AUIPanelActor";
 
     return Name;
 }
@@ -36,7 +38,8 @@ bool IsLuaSpawnableActorClassName(const FString& ClassName)
 		|| ClassName == "ASpotLightActor" 
 		|| ClassName == "ADirectionalLightActor" 
 		|| ClassName == "AHeightFogActor" 
-		|| ClassName == "ADecalActor";
+		|| ClassName == "ADecalActor"
+        || ClassName == "AUIPanelActor";
 }
 } // namespace
 

@@ -28,6 +28,15 @@
 
 #include "Render/Scene/Proxies/Primitive/UITextProxy.h"
 
+namespace
+{
+uint8 EncodeUIZOrderBits(int32 ZOrder)
+{
+    const int32 BiasedZOrder = std::clamp(ZOrder + 128, 0, 255);
+    return static_cast<uint8>(BiasedZOrder);
+}
+}
+
 void DrawCommandBuild::BuildMeshDrawCommand(const FPrimitiveProxy& Proxy, ERenderPass Pass, FRenderPipelineContext& Context, FDrawCommandList& OutList, uint16 UserBits)
 {
     const bool bHasMeshBuffer = (Proxy.MeshBuffer != nullptr);
@@ -770,6 +779,7 @@ void DrawCommandBuild::BuildBatchedUITextDrawCommands(FRenderPipelineContext& Co
         uint32 StartIndex = 0;
         uint32 IndexCount = 0;
         ID3D11ShaderResourceView* FontSRV = nullptr;
+        uint8 UserBits = 0;
     };
 
     std::vector<FTextRange> UIRanges;
@@ -804,7 +814,13 @@ void DrawCommandBuild::BuildBatchedUITextDrawCommands(FRenderPipelineContext& Co
         const uint32 EndIndex = FontBatch.GetScreenIndexCount();
         if (EndIndex > StartIndex)
         {
-            UIRanges.push_back({ StartIndex, EndIndex - StartIndex, TextProxy->CachedFontSRV });
+            uint8 UserBits = 0;
+            if (const UUIComponent* UIComponent = dynamic_cast<const UUIComponent*>(Proxy->Owner))
+            {
+                UserBits = EncodeUIZOrderBits(UIComponent->GetZOrder());
+            }
+
+            UIRanges.push_back({ StartIndex, EndIndex - StartIndex, TextProxy->CachedFontSRV, UserBits });
         }
     }
 
@@ -828,6 +844,6 @@ void DrawCommandBuild::BuildBatchedUITextDrawCommands(FRenderPipelineContext& Co
         Cmd.IndexCount = Range.IndexCount;
         Cmd.DiffuseSRV = Range.FontSRV;
         Cmd.Pass = ERenderPass::UI;
-        Cmd.SortKey = FDrawCommand::BuildSortKey(Cmd.Pass, 0, Cmd.Shader, nullptr, 0);
+        Cmd.SortKey = FDrawCommand::BuildSortKey(Cmd.Pass, Range.UserBits, Cmd.Shader, nullptr, 0);
     }
 }

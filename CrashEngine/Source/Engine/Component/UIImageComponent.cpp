@@ -91,6 +91,31 @@ void UUIImageComponent::Serialize(FArchive& Ar)
     Ar << Color.X << Color.Y << Color.Z << Color.W;
     Ar << ZOrder;
     Ar << MaterialSlot.Path;
+
+    if (Ar.IsLoading())
+    {
+        if (MaterialSlot.Path.empty() || MaterialSlot.Path == "None")
+        {
+            Material = nullptr;
+        }
+        else
+        {
+            Material = FMaterialManager::Get().GetOrCreateMaterial(MaterialSlot.Path);
+        }
+    }
+}
+
+void UUIImageComponent::PostDuplicate()
+{
+    UUIComponent::PostDuplicate();
+
+    if (MaterialSlot.Path.empty() || MaterialSlot.Path == "None")
+    {
+        Material = nullptr;
+        return;
+    }
+
+    Material = FMaterialManager::Get().GetOrCreateMaterial(MaterialSlot.Path);
 }
 
 FMeshBuffer* UUIImageComponent::GetMeshBuffer() const
