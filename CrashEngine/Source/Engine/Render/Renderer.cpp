@@ -122,6 +122,8 @@ ERenderPassNodeType MapPassToNodeType(ERenderPass Pass, const FRenderPipelineCon
         return ERenderPassNodeType::OverlayTextPass;
     case ERenderPass::PostProcess:
         return ERenderPassNodeType::HeightFogPass;
+    case ERenderPass::UI:
+        return ERenderPassNodeType::UIPass;
     default:
         return ERenderPassNodeType::DeferredOpaquePass;
     }

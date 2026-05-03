@@ -25,6 +25,7 @@ enum class ERenderPass : uint32
     OverlayBillboard,
     OverlayTextWorld,
     OverlayFont,
+    UI,
     MAX
 };
 
@@ -48,6 +49,7 @@ inline const char* GetRenderPassName(ERenderPass Pass)
         "RenderPass::OverlayBillboard",
         "RenderPass::OverlayTextWorld",
         "RenderPass::OverlayFont",
+        "RenderPass::UI",
     };
     static_assert(ARRAY_SIZE(Names) == (uint32)ERenderPass::MAX, "Names must match ERenderPass entries");
     return Names[(uint32)Pass];

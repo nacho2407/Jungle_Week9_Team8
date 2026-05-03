@@ -47,6 +47,7 @@ enum class ERenderPassNodeType
     GizmoPass,
     OverlayTextPass,
     LightHitMapPass,
+    UIPass
 };
 
 // FRenderPassRegistry는 실행 시 필요한 타입과 규칙의 매핑을 보관합니다.

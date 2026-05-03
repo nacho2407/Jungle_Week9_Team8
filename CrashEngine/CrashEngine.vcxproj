@@ -511,6 +511,7 @@ copy /Y "$(SolutionDir)vcpkg_installed\x64-windows\bin\lua51.dll" "$(OutDir)"</C
     <ClCompile Include="Source\Engine\Profiling\MemoryStats.cpp" />
     <ClCompile Include="Source\Engine\Profiling\Stats.cpp" />
     <ClCompile Include="Source\Engine\Profiling\Timer.cpp" />
+    <ClCompile Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.cpp" />
     <ClCompile Include="Source\Engine\Render\Renderer.cpp" />
     <ClCompile Include="Source\Engine\Render\Execute\Context\RenderPipelineContext.cpp" />
     <ClCompile Include="Source\Engine\Render\Execute\Context\Scene\SceneView.cpp" />
@@ -764,6 +765,7 @@ copy /Y "$(SolutionDir)vcpkg_installed\x64-windows\bin\lua51.dll" "$(OutDir)"</C
     <ClInclude Include="Source\Engine\Profiling\PlatformTime.h" />
     <ClInclude Include="Source\Engine\Profiling\Stats.h" />
     <ClInclude Include="Source\Engine\Profiling\Timer.h" />
+    <ClInclude Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.h" />
     <ClInclude Include="Source\Engine\Render\Renderer.h" />
     <ClInclude Include="Source\Engine\Render\Execute\Context\RenderCollectContext.h" />
     <ClInclude Include="Source\Engine\Render\Execute\Context\RenderPipelineContext.h" />

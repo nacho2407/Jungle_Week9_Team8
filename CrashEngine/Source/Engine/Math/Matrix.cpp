@@ -441,6 +441,28 @@ FMatrix FMatrix::MakeOrthographic(float Width, float Height, float NearZ, float 
         0, 0, -FarZ / Denom, 1);
 }
 
+FMatrix FMatrix::MakeOrthographicOffCenter(float Left, float Right, float Bottom, float Top, float NearZ, float FarZ)
+{
+    float ReciprocalWidth = 1.0f / (Right - Left);
+    float ReciprocalHeight = 1.0f / (Top - Bottom);
+    float Denom = NearZ - FarZ;
+
+    FMatrix Result = FMatrix::Identity;
+
+    Result.M[0][0] = 2.0f * ReciprocalWidth;
+    Result.M[3][0] = -(Right + Left) * ReciprocalWidth;
+
+    Result.M[1][1] = 2.0f * ReciprocalHeight;
+    Result.M[3][1] = -(Top + Bottom) * ReciprocalHeight;
+
+    Result.M[2][2] = 1.0f / Denom;
+    Result.M[3][2] = -FarZ / Denom;
+
+    Result.M[3][3] = 1.0f;
+
+    return Result;
+}
+
 FMatrix FMatrix::GetCancelRotationMatrix(const FMatrix& InMatrix)
 {
     FMatrix ret = FMatrix::Identity;
