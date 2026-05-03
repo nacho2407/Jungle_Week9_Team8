@@ -82,6 +82,8 @@ void FShaderProgramRegistry::Initialize()
     FGraphicsProgramDesc NormalView = MakeGraphicsProgramDesc("NormalView", "Shaders/Render/Scene/ViewModes/NonLitViewMode.hlsl");
     AddDefine(NormalView, "NON_LIT_VIEW_WORLD_NORMAL", "1");
     Add(EShaderType::NormalView, NormalView);
+
+    Add(EShaderType::UIImage, MakeGraphicsProgramDesc("UI", "Shaders/Render/Editor/ShaderUI.hlsl", "VS_UI", "PS_UI"));
 }
 
 /*

@@ -48,6 +48,8 @@ const char* GetShaderTypeName(EShaderType InType)
         return "FXAA";
     case EShaderType::LightHitMap:
         return "LightHitMap";
+    case EShaderType::UIImage:
+        return "UIImage";
     case EShaderType::MAX:
     default:
         return "Unknown";

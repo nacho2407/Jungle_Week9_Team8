@@ -5,8 +5,6 @@
 #include "Texture/Texture2D.h"
 #include "Render/Execute/Registry/RenderPassTypes.h"
 #include "Render/Resources/Bindings/RenderBindingSlots.h"
-// 엔진 환경에 맞게 쿼드 메쉬나 텍스처를 가져오는 헤더 인클루드 필요
-// #include "Engine/Runtime/Engine.h"
 
 FUIProxy::FUIProxy(UUIImageComponent* InComponent)
     : FPrimitiveProxy(InComponent)
@@ -25,7 +23,7 @@ void FUIProxy::UpdateMesh()
     DepthStencil = EDepthStencilState::NoDepth;
     Rasterizer = ERasterizerState::SolidNoCull;
     MeshBuffer = &FMeshBufferManager::Get().GetMeshBuffer(EPrimitiveMeshShape::TexturedQuad);
-    Shader = FShaderManager::Get().GetShader(EShaderType::Billboard);
+    Shader = FShaderManager::Get().GetShader(EShaderType::UIImage);
 
     UpdateMaterial();
 }
@@ -56,21 +54,27 @@ void FUIProxy::UpdateMaterial()
 void FUIProxy::UpdateTransform()
 {
     UUIImageComponent* UIComp = static_cast<UUIImageComponent*>(Owner);
-    if (!UIComp) return;
 
     FMatrix ScaleMat = FMatrix::MakeScaleMatrix(FVector(1.0f, UIComp->GetSize().X, UIComp->GetSize().Y));
-
     FMatrix RotMat = FMatrix::MakeRotationY(90.0f);
+    FMatrix TransMat = FMatrix::MakeTranslationMatrix(FVector(
+        UIComp->GetPosition().X + (UIComp->GetSize().X * 0.5f),
+        UIComp->GetPosition().Y + (UIComp->GetSize().Y * 0.5f),
+        0.5f));
 
-    float PosX = UIComp->GetPosition().X + (UIComp->GetSize().X * 0.5f);
-    float PosY = UIComp->GetPosition().Y + (UIComp->GetSize().Y * 0.5f);
+    FMatrix WorldMat = ScaleMat * RotMat * TransMat;
 
-    FMatrix TransMat = FMatrix::MakeTranslationMatrix(FVector(PosX, PosY, 0.5f));
+    float Width = 1920.0f;
+    float Height = 1080.0f;
+    FMatrix OrthoProj = FMatrix::MakeOrthographicOffCenter(0.0f, Width, Height, 0.0f, 0.0f, 1.0f);
 
-    PerObjectConstants = FPerObjectCBData::FromWorldMatrix(ScaleMat * RotMat * TransMat);
+    FMatrix CombinedMat = WorldMat * OrthoProj;
 
-    CachedWorldPos = FVector(UIComp->GetPosition().X, UIComp->GetPosition().Y, 0.0f);
-    CachedBounds = UIComp->GetWorldBoundingBox();
+    FPerObjectCBData Data = {};
+    Data.Model = CombinedMat;
+    Data.NormalMatrix = FMatrix::Identity;
+    Data.Color = UIComp->GetColor();
 
+    PerObjectConstants = Data;
     MarkPerObjectCBDirty();
 }

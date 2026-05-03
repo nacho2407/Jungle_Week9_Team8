@@ -459,6 +459,7 @@
     <FxCompile Include="Shaders\Utils\Math.hlsli">
       <Filter>Shaders\Utils</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Render\Editor\ShaderUI.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Editor\EditorEngine.cpp">
@@ -1103,6 +1104,8 @@
     <ClCompile Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.cpp" />
     <ClCompile Include="Source\Engine\Render\Scene\Proxies\Primitive\UIProxy.cpp" />
     <ClCompile Include="Source\Engine\Component\UIImageComponent.cpp" />
+    <ClCompile Include="Source\Engine\Component\UITextComponent.cpp" />
+    <ClCompile Include="Source\Engine\Render\Scene\Proxies\Primitive\UITextProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Editor\EditorEngine.h">
@@ -2001,6 +2004,8 @@
     <ClInclude Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.h" />
     <ClInclude Include="Source\Engine\Render\Scene\Proxies\Primitive\UIProxy.h" />
     <ClInclude Include="Source\Engine\Component\UIImageComponent.h" />
+    <ClInclude Include="Source\Engine\Component\UITextComponent.h" />
+    <ClInclude Include="Source\Engine\Render\Scene\Proxies\Primitive\UITextProxy.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CrashEngine.rc" />
