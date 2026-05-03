@@ -1101,6 +1101,8 @@
     <ClCompile Include="Source\Engine\LuaScript\LuaInputProxy.cpp" />
     <ClCompile Include="Source\Engine\LuaScript\LuaWorldProxy.cpp" />
     <ClCompile Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.cpp" />
+    <ClCompile Include="Source\Engine\Render\Scene\Proxies\Primitive\UIProxy.cpp" />
+    <ClCompile Include="Source\Engine\Component\UIImageComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Editor\EditorEngine.h">
@@ -1997,6 +1999,8 @@
     <ClInclude Include="Source\Engine\Render\Submission\Atlas\ShadowAtlasPage.h" />
     <ClInclude Include="Source\Engine\Render\Submission\Atlas\ShadowAtlasTypes.h" />
     <ClInclude Include="Source\Engine\Render\Execute\Passes\Scene\UIPass.h" />
+    <ClInclude Include="Source\Engine\Render\Scene\Proxies\Primitive\UIProxy.h" />
+    <ClInclude Include="Source\Engine\Component\UIImageComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CrashEngine.rc" />
