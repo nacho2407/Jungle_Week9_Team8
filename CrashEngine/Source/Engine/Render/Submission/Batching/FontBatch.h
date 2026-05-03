@@ -43,7 +43,7 @@ public:
     void AddScreenText(const FString& Text,
                        float ScreenX, float ScreenY,
                        float ViewportWidth, float ViewportHeight,
-                       float Scale = 1.0f);
+                        float Scale = 1.0f, const FVector4& Color = { 1.0f, 1.0f, 1.0f, 1.0f });
 
     void ClearWorld();
     void ClearOverlayWorld();

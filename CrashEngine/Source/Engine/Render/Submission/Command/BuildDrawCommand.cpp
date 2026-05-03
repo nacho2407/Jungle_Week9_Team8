@@ -20,10 +20,13 @@
 #include "Render/Scene/Proxies/Primitive/TextRenderSceneProxy.h"
 #include "Render/Resources/State/RenderStateTypes.h"
 #include "Render/Submission/Command/DrawCommand.h"
+#include "Component/UITextComponent.h"
 #include "Render/Submission/Command/DrawCommandList.h"
 #include "Resource/ResourceManager.h"
 
 #include <vector>
+
+#include "Render/Scene/Proxies/Primitive/UITextProxy.h"
 
 void DrawCommandBuild::BuildMeshDrawCommand(const FPrimitiveProxy& Proxy, ERenderPass Pass, FRenderPipelineContext& Context, FDrawCommandList& OutList, uint16 UserBits)
 {
@@ -624,7 +627,7 @@ void DrawCommandBuild::BuildBatchedWorldTextDrawCommands(FRenderPipelineContext&
 
     for (FPrimitiveProxy* Proxy : Context.Submission.SceneData->Primitives.VisibleProxies)
     {
-        if (!Proxy || !Proxy->bFontBatched)
+        if (!Proxy || !Proxy->bFontBatched || Proxy->Pass == ERenderPass::UI)
         {
             continue;
         }
@@ -752,3 +755,79 @@ void DrawCommandBuild::BuildDecalDrawCommand(const FPrimitiveProxy& Proxy, FRend
 }
 
 
+void DrawCommandBuild::BuildBatchedUITextDrawCommands(FRenderPipelineContext& Context, FDrawCommandList& OutList)
+{
+    if (!Context.Renderer || !Context.SceneView || !Context.Submission.SceneData)
+    {
+        return;
+    }
+
+    FFontBatch& FontBatch = Context.Renderer->GetTextBatch();
+    FontBatch.ClearScreen();
+
+    struct FTextRange
+    {
+        uint32 StartIndex = 0;
+        uint32 IndexCount = 0;
+        ID3D11ShaderResourceView* FontSRV = nullptr;
+    };
+
+    std::vector<FTextRange> UIRanges;
+
+    for (FPrimitiveProxy* Proxy : Context.Submission.SceneData->Primitives.VisibleProxies)
+    {
+        if (!Proxy || !Proxy->bFontBatched || Proxy->Pass != ERenderPass::UI)
+        {
+            continue;
+        }
+
+        const FUITextProxy* TextProxy = static_cast<const FUITextProxy*>(Proxy);
+
+        if (TextProxy->CachedText.empty() || !TextProxy->CachedFontResource || !TextProxy->CachedFontSRV)
+        {
+            continue;
+        }
+
+        FontBatch.EnsureCharInfoMap(TextProxy->CachedFontResource);
+
+        const uint32 StartIndex = FontBatch.GetScreenIndexCount();
+        FontBatch.AddScreenText(
+            TextProxy->CachedText,
+            TextProxy->CachedPosition.X,
+            TextProxy->CachedPosition.Y,
+            Context.SceneView->ViewportWidth,
+            Context.SceneView->ViewportHeight,
+            TextProxy->CachedFontScale,
+            TextProxy->CachedColor
+            );
+
+        const uint32 EndIndex = FontBatch.GetScreenIndexCount();
+        if (EndIndex > StartIndex)
+        {
+            UIRanges.push_back({ StartIndex, EndIndex - StartIndex, TextProxy->CachedFontSRV });
+        }
+    }
+
+    if (UIRanges.empty() || !FontBatch.UploadScreenBuffers(Context.Context)) return;
+
+    FGraphicsProgram* Shader = FShaderManager::Get().GetShader(EShaderType::UIText);
+    if (!Shader) return;
+
+    for (const FTextRange& Range : UIRanges)
+    {
+        FDrawCommand& Cmd = OutList.AddCommand();
+        Cmd.Shader = Shader;
+        Cmd.Blend = EBlendState::AlphaBlend;
+        Cmd.DepthStencil = EDepthStencilState::NoDepth;
+        Cmd.Rasterizer = ERasterizerState::SolidNoCull;
+        Cmd.Topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+        Cmd.RawVB = FontBatch.GetScreenVBBuffer();
+        Cmd.RawVBStride = FontBatch.GetScreenVBStride();
+        Cmd.RawIB = FontBatch.GetScreenIBBuffer();
+        Cmd.FirstIndex = Range.StartIndex;
+        Cmd.IndexCount = Range.IndexCount;
+        Cmd.DiffuseSRV = Range.FontSRV;
+        Cmd.Pass = ERenderPass::UI;
+        Cmd.SortKey = FDrawCommand::BuildSortKey(Cmd.Pass, 0, Cmd.Shader, nullptr, 0);
+    }
+}

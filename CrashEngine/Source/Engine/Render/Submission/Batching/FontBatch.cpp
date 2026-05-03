@@ -223,7 +223,7 @@ void FFontBatch::AddOverlayWorldText(const FString& Text,
 void FFontBatch::AddScreenText(const FString& Text,
                                float ScreenX, float ScreenY,
                                float ViewportWidth, float ViewportHeight,
-                               float Scale)
+                               float Scale, const FVector4& Color)
 {
     if (Text.empty())
         return;
@@ -297,10 +297,10 @@ void FFontBatch::AddScreenText(const FString& Text,
         const float Top    = PixelToClipY(ScreenY);
         const float Bottom = PixelToClipY(ScreenY + CharH);
 
-        pV[0] = { FVector(Left, Top, 0.0f), FVector2(UVMin.X, UVMin.Y) };
-        pV[1] = { FVector(Right, Top, 0.0f), FVector2(UVMax.X, UVMin.Y) };
-        pV[2] = { FVector(Left, Bottom, 0.0f), FVector2(UVMin.X, UVMax.Y) };
-        pV[3] = { FVector(Right, Bottom, 0.0f), FVector2(UVMax.X, UVMax.Y) };
+        pV[0] = { FVector(Left, Top, 0.0f), Color,FVector2(UVMin.X, UVMin.Y) };
+        pV[1] = { FVector(Right, Top, 0.0f), Color, FVector2(UVMax.X, UVMin.Y) };
+        pV[2] = { FVector(Left, Bottom, 0.0f), Color, FVector2(UVMin.X, UVMax.Y) };
+        pV[3] = { FVector(Right, Bottom, 0.0f), Color, FVector2(UVMax.X, UVMax.Y) };
 
         const uint32 Vi = Base + CharIdx * 4;
         pI[0]           = Vi;

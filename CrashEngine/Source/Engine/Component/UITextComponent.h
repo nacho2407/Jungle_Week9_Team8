@@ -3,22 +3,19 @@
 #include "Component/PrimitiveComponent.h"
 #include "Math/Vector.h" 
 #include "Render/Resources/Buffers/MeshBufferManager.h"
+#include "Resource/ResourceManager.h"
 
-class UTexture2D;
-
-class UUIImageComponent : public UPrimitiveComponent
+class UUITextComponent : public UPrimitiveComponent
 {
 public:
-    DECLARE_CLASS(UUIImageComponent, UPrimitiveComponent)
+    DECLARE_CLASS(UUITextComponent, UPrimitiveComponent)
 
-    UUIImageComponent();
-    virtual ~UUIImageComponent() override = default;
+    UUITextComponent();
+    virtual ~UUITextComponent() override = default;
 
-    // --- 렌더링 및 엔진 기본 오버라이드 ---
     virtual FPrimitiveProxy* CreateSceneProxy() override;
     virtual void UpdateWorldAABB() const override;
 
-    // --- 에디터 및 직렬화 ---
     virtual void GetEditableProperties(TArray<FPropertyDescriptor>& OutProps) override;
     virtual void PostEditProperty(const char* PropertyName) override;
     virtual void Serialize(FArchive& Ar) override;
@@ -26,29 +23,31 @@ public:
     virtual FMeshBuffer* GetMeshBuffer() const override;
     virtual FMeshDataView GetMeshDataView() const override;
 
-    // --- Getter ---
+    bool ReacquireDefaultFont();
+
+    const FString& GetText() const { return Text; }
+    const FName& GetFontName() const { return FontName; }
     FVector2 GetPosition() const { return Position; }
-    FVector2 GetSize() const { return Size; }
+    float GetFontSize() const { return FontSize; }
+    const FFontResource* GetFont() const { return CachedFont; }
     FVector4 GetColor() const { return Color; }
     int32 GetZOrder() const { return ZOrder; }
-    UMaterial* GetMaterial() const { return Material; }
-    float GetRotation() const { return Rotation; }
 
     // --- Setter ---
+    void SetText(const FString& InText);
+    void SetFont(const FName& InFontName);
     void SetPosition(const FVector2& InPosition);
-    void SetSize(const FVector2& InSize);
+    void SetFontSize(float InSize);
     void SetColor(const FVector4& InColor);
     void SetZOrder(int32 InZOrder);
-    void SetMaterial(UMaterial* InMaterial);
-    void SetRotation(float InRotation);
 
 private:
+    FString Text;
+    FName FontName = FName("Default");
+    FFontResource* CachedFont = nullptr;
+
     FVector2 Position = FVector2(0.0f, 0.0f);
-    float Rotation = 0.0f;
-    FVector2 Size = FVector2(100.0f, 100.0f);
+    float FontSize = 1.0f;
     FVector4 Color = FVector4(1.0f, 1.0f, 1.0f, 1.0f);
     int32 ZOrder = 0;
-
-    FMaterialSlot MaterialSlot;
-    UMaterial* Material = nullptr;
 };

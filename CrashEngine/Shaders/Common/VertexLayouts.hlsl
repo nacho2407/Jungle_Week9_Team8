@@ -27,6 +27,14 @@ struct VS_Input_PC
     float4 color    : COLOR;
 };
 
+struct VS_Input_PCT
+{
+    float3 position : POSITION;
+    float4 color : COLOR;
+    float2 texcoord : TEXCOORD0;
+   
+};
+
 // FVertexPNCT (Position + Normal + Color + TexCoord)
 struct VS_Input_PNCT
 {
@@ -68,7 +76,12 @@ struct PS_Input_Color
     float4 position : SV_POSITION;
     float4 color    : COLOR;
 };
-
+struct PS_Input_PCT
+{
+    float4 position : SV_POSITION;
+    float4 color : COLOR;
+    float2 texcoord : TEXCOORD0;
+};
 // SV_POSITION + TexCoord
 struct PS_Input_Tex
 {

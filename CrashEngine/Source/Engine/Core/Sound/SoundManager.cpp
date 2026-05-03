@@ -31,23 +31,18 @@ void FSoundManager::Tick()
 
 void FSoundManager::Release()
 {
-    if (MasterGroup)
-    {
-        MasterGroup->stop();
-    }
-
-    for (auto& Pair : SoundCache)
-    {
-        if (Pair.second)
-        {
-            Pair.second->release();
-        }
-    }
-    SoundCache.clear();
-
     if (System)
     {
-        System->close(); 
+        System->close();
+        for (auto& Pair : SoundCache)
+        {
+            if (Pair.second)
+            {
+                Pair.second->release();
+            }
+        }
+        SoundCache.clear();
+
         System->release();
         System = nullptr;
     }

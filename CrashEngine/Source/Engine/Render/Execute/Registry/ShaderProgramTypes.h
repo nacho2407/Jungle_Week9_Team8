@@ -25,5 +25,6 @@ enum class EShaderType : uint32
     FXAA,
     LightHitMap,
     UIImage,
+    UIText,
     MAX,
 };

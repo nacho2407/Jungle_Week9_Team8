@@ -84,6 +84,7 @@ void FShaderProgramRegistry::Initialize()
     Add(EShaderType::NormalView, NormalView);
 
     Add(EShaderType::UIImage, MakeGraphicsProgramDesc("UI", "Shaders/Render/Editor/ShaderUI.hlsl", "VS_UI", "PS_UI"));
+    Add(EShaderType::UIText, MakeGraphicsProgramDesc("UIText", "Shaders/Render/Editor/TextUI.hlsl", "VS_TextUI", "PS_TextUI"));
 }
 
 /*

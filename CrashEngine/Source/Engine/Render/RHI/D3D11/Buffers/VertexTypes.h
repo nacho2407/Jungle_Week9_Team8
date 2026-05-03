@@ -30,6 +30,7 @@ struct FOverlayVertex
 struct FTextureVertex
 {
     FVector  Position;
+    FVector4 Color;
     FVector2 TexCoord;
     float    _pad[3];
 };

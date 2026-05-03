@@ -69,11 +69,18 @@ void UUIImageComponent::SetMaterial(UMaterial* InMaterial)
     MarkProxyDirty(ESceneProxyDirtyFlag::Material);
 }
 
+void UUIImageComponent::SetRotation(float InRotation)
+{
+    Rotation = InRotation;
+    MarkRenderTransformDirty();
+}
+
 void UUIImageComponent::GetEditableProperties(TArray<FPropertyDescriptor>& OutProps)
 {
     UPrimitiveComponent::GetEditableProperties(OutProps);
     OutProps.push_back({ "UI Position", EPropertyType::Vec2, &Position });
     OutProps.push_back({ "UI Size",     EPropertyType::Vec2, &Size });
+    OutProps.push_back({ "UI Rotation",    EPropertyType::Float, &Rotation });
     OutProps.push_back({ "Z-Order",     EPropertyType::Int,  &ZOrder });
     OutProps.push_back({ "Color",     EPropertyType::Color4,  &Color });
     OutProps.push_back({ "Material", EPropertyType::MaterialSlot, &MaterialSlot });
@@ -85,7 +92,8 @@ void UUIImageComponent::PostEditProperty(const char* PropertyName)
 
     if (strcmp(PropertyName, "UI Position") == 0 ||
         strcmp(PropertyName, "UI Size") == 0 ||
-        strcmp(PropertyName, "Z-Order") == 0)
+        strcmp(PropertyName, "Z-Order") == 0 ||
+        strcmp(PropertyName, "UI Rotation") == 0)
     {
         MarkRenderTransformDirty();
         MarkWorldBoundsDirty();
@@ -116,6 +124,7 @@ void UUIImageComponent::Serialize(FArchive& Ar)
     UPrimitiveComponent::Serialize(Ar);
     Ar << Position.X << Position.Y;
     Ar << Size.X << Size.Y;
+    Ar << Rotation;
     Ar << Color.X << Color.Y << Color.Z << Color.W;
     Ar << ZOrder;
     Ar << MaterialSlot.Path;

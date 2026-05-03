@@ -430,6 +430,8 @@ void FRenderer::BuildDrawCommands(FRenderPipelineContext& PipelineContext)
 
     DrawCommandBuild::BuildBatchedWorldTextDrawCommands(PipelineContext, *PipelineContext.DrawCommandList);
 
+    DrawCommandBuild::BuildBatchedUITextDrawCommands(PipelineContext, *PipelineContext.DrawCommandList);
+
     // 현재 ViewMode가 사용할 패스 구성을 조회합니다.
     const FViewModePassRegistry* ViewModeRegistry   = PipelineContext.ViewMode.Registry ? PipelineContext.ViewMode.Registry : ViewModePassRegistry;
     const bool                   bHasViewModeConfig = ViewModeRegistry && ViewModeRegistry->HasConfig(PipelineContext.ViewMode.ActiveViewMode);

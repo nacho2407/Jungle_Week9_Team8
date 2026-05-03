@@ -50,6 +50,8 @@ const char* GetShaderTypeName(EShaderType InType)
         return "LightHitMap";
     case EShaderType::UIImage:
         return "UIImage";
+    case EShaderType::UIText:
+        return "UIText";
     case EShaderType::MAX:
     default:
         return "Unknown";

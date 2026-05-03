@@ -460,6 +460,7 @@
       <Filter>Shaders\Utils</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Render\Editor\ShaderUI.hlsl" />
+    <FxCompile Include="Shaders\Render\Editor\TextUI.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Editor\EditorEngine.cpp">

@@ -54,25 +54,24 @@ void FUIProxy::UpdateMaterial()
 void FUIProxy::UpdateTransform()
 {
     UUIImageComponent* UIComp = static_cast<UUIImageComponent*>(Owner);
+    if (!UIComp) return;
 
     FMatrix ScaleMat = FMatrix::MakeScaleMatrix(FVector(1.0f, UIComp->GetSize().X, UIComp->GetSize().Y));
-    FMatrix RotMat = FMatrix::MakeRotationY(90.0f);
+    FMatrix UserRotMat = FMatrix::MakeRotationX(UIComp->GetRotation());
+    FMatrix AlignRotMat = FMatrix::MakeRotationY(90.0f);
     FMatrix TransMat = FMatrix::MakeTranslationMatrix(FVector(
         UIComp->GetPosition().X + (UIComp->GetSize().X * 0.5f),
         UIComp->GetPosition().Y + (UIComp->GetSize().Y * 0.5f),
         0.5f));
 
-    FMatrix WorldMat = ScaleMat * RotMat * TransMat;
+    FMatrix WorldMat = ScaleMat * UserRotMat * AlignRotMat * TransMat;
 
     float Width = 1920.0f;
     float Height = 1080.0f;
     FMatrix OrthoProj = FMatrix::MakeOrthographicOffCenter(0.0f, Width, Height, 0.0f, 0.0f, 1.0f);
 
-    FMatrix CombinedMat = WorldMat * OrthoProj;
-
     FPerObjectCBData Data = {};
-    Data.Model = CombinedMat;
-    Data.NormalMatrix = FMatrix::Identity;
+    Data.Model = WorldMat * OrthoProj;
     Data.Color = UIComp->GetColor();
 
     PerObjectConstants = Data;
