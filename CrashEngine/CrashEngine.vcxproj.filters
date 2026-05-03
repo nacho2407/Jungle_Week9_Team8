@@ -1107,6 +1107,8 @@
     <ClCompile Include="Source\Engine\Component\UIImageComponent.cpp" />
     <ClCompile Include="Source\Engine\Component\UITextComponent.cpp" />
     <ClCompile Include="Source\Engine\Render\Scene\Proxies\Primitive\UITextProxy.cpp" />
+    <ClCompile Include="Source\Engine\Component\UIPanelComponent.cpp" />
+    <ClCompile Include="Source\Engine\Component\UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Editor\EditorEngine.h">
@@ -2007,6 +2009,8 @@
     <ClInclude Include="Source\Engine\Component\UIImageComponent.h" />
     <ClInclude Include="Source\Engine\Component\UITextComponent.h" />
     <ClInclude Include="Source\Engine\Render\Scene\Proxies\Primitive\UITextProxy.h" />
+    <ClInclude Include="Source\Engine\Component\UIPanelComponent.h" />
+    <ClInclude Include="Source\Engine\Component\UIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CrashEngine.rc" />

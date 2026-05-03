@@ -400,7 +400,9 @@ copy /Y "$(SolutionDir)vcpkg_installed\x64-windows\bin\lua51.dll" "$(OutDir)"</C
   <ItemGroup>
     <ClCompile Include="Source\Editor\Settings\ReleaseSettings.cpp" />
     <ClCompile Include="Source\Engine\Collision\CollisionSystem.cpp" />
+    <ClCompile Include="Source\Engine\Component\UIComponent.cpp" />
     <ClCompile Include="Source\Engine\Component\UIImageComponent.cpp" />
+    <ClCompile Include="Source\Engine\Component\UIPanelComponent.cpp" />
     <ClCompile Include="Source\Engine\Component\UITextComponent.cpp" />
     <ClCompile Include="Source\Engine\LuaScript\LuaActionLibrary.cpp" />
     <ClCompile Include="Source\Engine\LuaScript\LuaInputProxy.cpp" />
@@ -630,7 +632,9 @@ copy /Y "$(SolutionDir)vcpkg_installed\x64-windows\bin\lua51.dll" "$(OutDir)"</C
   <ItemGroup>
     <ClInclude Include="Source\Editor\Settings\ReleaseSettings.h" />
     <ClInclude Include="Source\Engine\Collision\CollisionSystem.h" />
+    <ClInclude Include="Source\Engine\Component\UIComponent.h" />
     <ClInclude Include="Source\Engine\Component\UIImageComponent.h" />
+    <ClInclude Include="Source\Engine\Component\UIPanelComponent.h" />
     <ClInclude Include="Source\Engine\Component\UITextComponent.h" />
     <ClInclude Include="Source\Engine\Core\CoroutineScheduler\LuaCoroutineScheduler.h" />
     <ClInclude Include="Source\Engine\LuaScript\LuaActionLibrary.h" />
