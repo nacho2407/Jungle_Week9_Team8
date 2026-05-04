@@ -1,0 +1,12 @@
+# Blender 5.0.1 MTL File: 'Drone.blend'
+# www.blender.org
+
+newmtl pixel_texture
+Ns 234.499985
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+d 1.000000
+map_Kd pixel_texture.jpg
+illum 2
