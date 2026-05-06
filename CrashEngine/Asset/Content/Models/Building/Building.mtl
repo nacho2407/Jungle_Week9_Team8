@@ -1,0 +1,26 @@
+# Blender 5.1.0 MTL File: 'None'
+# www.blender.org
+
+newmtl tex_2.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd terrain_BaseColor.png
+map_Ns terrain_Roughness.png
+map_refl terrain_Metallic.png
+map_d terrain_BaseColor.png
+map_Bump -bm 1.000000 terrain_Normal_opengl.png
+
+newmtl texture_1.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd building_BaseColor.png
+map_Ns building_Roughness.png
+map_refl building_Metallic.png
+map_Bump -bm 1.000000 building_Normal_opengl.png
